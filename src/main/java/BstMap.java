@@ -1,3 +1,5 @@
+import org.w3c.dom.Node;
+
 /** A map backed by a binary search tree. */
 public class BstMap<K extends Comparable<K>, V> {
 
@@ -38,7 +40,7 @@ public class BstMap<K extends Comparable<K>, V> {
     /** Removes the given key from the map. */
     public void remove(K key) {
         if (this.root != null) {
-            this.root.remove(key);
+            this.root = this.root.remove(key);
         }
     }
 
@@ -67,12 +69,46 @@ public class BstMap<K extends Comparable<K>, V> {
 
         /** Returns the node with the given key, or null if no such node can be found. */
         public Node<K, V> find(K key) {
-            throw new UnsupportedOperationException("not implemented");
+            Node<K, V> curr = this;
+            while(curr != null) {
+                if (this.key.compareTo(key) == 0) {
+                    return curr;
+                } else if (this.key.compareTo(key) == -1) {
+                    curr = curr.right;
+                } else {
+                    curr = curr.left;
+                }
+            }
+            return curr;
         }
 
         /** Inserts the given (key, value) pair into the binary search tree. */
         public void insert(K key, V value) {
-            throw new UnsupportedOperationException("not implemented");
+            Node<K, V> newNode = new Node<K,V>(key, value);
+            
+            Node<K, V> curr = this;
+            Node<K, V> next = this;
+            while(next != null && curr!= null) {
+                if (this.key.compareTo(key) == 0) {
+
+                } else if (this.key.compareTo(key) == -1) {
+                    next = curr;
+                    curr = curr.right;
+                } else {
+                    next = curr;
+                    curr = curr.left;
+                }
+            }
+            if (curr.left != null) {
+                curr.left = newNode;
+            } else {
+                if (curr.left.key.compareTo(key) == -1) {
+                    curr.right = newNode;
+                } else {
+                    curr.right = curr.left;
+                    curr.left = newNode;
+                }
+            }
         }
 
         /**
